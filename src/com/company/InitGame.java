@@ -1,9 +1,11 @@
 package com.company;
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class InitGame {
     //INIT GAME ++++++++++++++++++++++
+    static Player playerOne;
+    static Player playerTwo;
+
     private InitGame() {
     }
 
@@ -15,45 +17,51 @@ public class InitGame {
         do {
             System.out.println("Input command: ");
             inputs = scanner.nextLine().split(" ");
-            System.out.println(Arrays.toString(inputs));
             if (isValidInput(inputs)) {
-                launchGame(inputs[1], inputs[2]);
+                setPlayers(inputs[1], inputs[2]);
+                GameBoard gameBoard = new GameBoard();
                 isAllSet = true;
             }
         } while (!isAllSet);
     }
 
-    static void launchGame(String playerOne, String playerTwo) {
+    static void launchGame() {
+        boolean winner = false;
 
-        //instantiate player one
-        //instantiate player two
-        //instantiate GameBoard
+        GameBoard.printGameBoard(); //print empty game board
 
-        //boolean gameContinues = true;
-        //ticTacGame ticTac = new ticTacGame();
-        //ticTac.setPlayers(playerOne, playerTwo);
-        //ticTacPrinter.printGameCanvas(ticTac.getTicTac());
-        //String gameStatus;
+        while(!winner) {
+            playerOne.playerMoves();
 
-        /*
-        while(gameContinues) {
-            //playerOne moves
-            ticTac.playerMoves(ticTac.getPlayerOne());
-            ticTacPrinter.printGameCanvas(ticTac.getTicTac());
-            ticTac.updateGameStatus();
-            gameStatus = ticTac.getGameStatus();
-            switch (gameStatus) {
-                case ("X-wins"):
-
-            }
-            ticTacPrinter.printGameStatus(ticTac.getGameStatus());
-
-            ticTac.playerMoves(ticTac.getPlayerTwo());
-            ticTacPrinter.printGameCanvas(ticTac.getTicTac());
-            ticTac.updateGameStatus();
-            ticTacPrinter.printGameStatus(ticTac.getGameStatus());
+            playerTwo.playerMoves();
         }
-        */
+    }
+
+    static void setPlayers(String firstPlayer, String secondPlayer) {
+
+        switch (firstPlayer) {
+            case "user":
+                playerOne = new Human('X');
+                break;
+            case "easy":
+                playerOne = new EasyCpu('X');
+                break;
+            case "medium":
+                playerOne = new MediumCpu('X');
+                break;
+        }
+
+        switch (secondPlayer) {
+            case "user":
+                playerTwo = new Human('O');
+                break;
+            case "easy":
+                playerTwo = new EasyCpu('O');
+                break;
+            case "medium":
+                playerTwo = new MediumCpu('O');
+                break;
+        }
     }
 
     static boolean isValidInput(String[] inputs) {
